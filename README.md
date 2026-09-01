@@ -1,44 +1,50 @@
 # CodeAlpha Security Tasks
 
-A collection of small Python security and networking exercises completed while developing practical cybersecurity skills.
+A small collection of Python exercises focused on **networking, packet analysis, and system inspection**. The repository documents hands-on learning work rather than production security software.
 
 ## Projects
 
 ### Network Sniffer
-A lightweight packet-sniffing exercise built with **Scapy**. It inspects IP traffic and reports TCP, UDP, and ICMP packet information.
+
+A lightweight packet-capture exercise using **Scapy**. It inspects IPv4 packets and reports TCP, UDP, and ICMP metadata such as addresses, ports, and protocol information.
 
 ```text
-Interface → Packet Capture → Protocol Detection → Packet Details
+Network Interface → Packet Capture → Protocol Detection → Packet Metadata
 ```
 
 ### Process Utility
-`ps.py` contains a separate Python exercise focused on local process/system inspection.
+
+`ps.py` contains a separate Python exercise related to local system/process inspection.
 
 ## Requirements
 
 - Python 3
-- Scapy for `network_sniffer.py`
+- Scapy for the packet-sniffing exercise
 - An environment where packet capture is permitted
 
-## Running the network sniffer
-
-Install the dependency:
+Install Scapy:
 
 ```bash
-pip install scapy
+python -m pip install scapy
 ```
 
-Then import or call the packet-sniffing function from Python with an authorized network interface.
+Packet capture may require elevated privileges depending on the operating system.
 
-> Packet capture can require elevated privileges depending on the operating system. Only capture traffic on networks and devices you are authorized to inspect.
+## Responsible use
 
-## Purpose
+Use packet-capture functionality only on networks, devices, and interfaces you are authorized to inspect. Do not use this project to intercept traffic belonging to other people or systems without permission.
 
-This repository is primarily a **learning portfolio**: small, focused exercises that demonstrate hands-on work with Python, networking, and security tooling.
+See `SECURITY.md` for security-reporting guidance.
+
+## Engineering notes
+
+This repository intentionally contains small exercises. The code is useful as a record of practical learning and experimentation, but it is **not presented as production-grade monitoring or security software**.
+
+Future improvements may include automated tests, clearer module boundaries, stronger input handling, and documented execution examples.
 
 ## Status
 
-Educational project. Individual exercises may be intentionally simple and are not presented as production security software.
+**Learning portfolio / active refinement.**
 
 ## License
 
