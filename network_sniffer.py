@@ -1,28 +1,43 @@
+"""Small Scapy-based IPv4 packet inspection exercise."""
+
+import argparse
+
 import scapy.all as scapy
 
 
+def process_packet(packet):
+    """Print useful metadata for supported IPv4 packets."""
+    if not packet.haslayer(scapy.IP):
+        return
+
+    ip = packet[scapy.IP]
+    print(f"IP packet: {ip.src} --> {ip.dst} Protocol: {ip.proto}")
+
+    if packet.haslayer(scapy.TCP):
+        tcp = packet[scapy.TCP]
+        print(f"TCP packet: {ip.src}:{tcp.sport} --> {ip.dst}:{tcp.dport}")
+    elif packet.haslayer(scapy.UDP):
+        udp = packet[scapy.UDP]
+        print(f"UDP packet: {ip.src}:{udp.sport} --> {ip.dst}:{udp.dport}")
+    elif packet.haslayer(scapy.ICMP):
+        icmp = packet[scapy.ICMP]
+        print(
+            f"ICMP packet: {ip.src} --> {ip.dst} "
+            f"Type: {icmp.type} Code: {icmp.code}"
+        )
+
+
 def sniff_packets(interface):
+    """Capture packets on an authorized interface until interrupted."""
     scapy.sniff(iface=interface, store=False, prn=process_packet)
 
 
-def process_packet(packet):
-    if packet.haslayer(scapy.IP):
-        src_ip = packet[scapy.IP].src
-        dst_ip = packet[scapy.IP].dst
-        protocol = packet[scapy.IP].proto
-        print(f"IP packet: {src_ip} --> {dst_ip} Protocol: {protocol}")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("interface", help="network interface to capture on")
+    args = parser.parse_args()
+    sniff_packets(args.interface)
 
-        if packet.haslayer(scapy.TCP):
-            src_port = packet[scapy.TCP].sport
-            dst_port = packet[scapy.TCP].dport
-            print(f"TCP Packet: {src_ip}:{src_port} --> {dst_ip}:{dst_port}")
 
-        elif packet.haslayer(scapy.UDP):
-            src_port = packet[scapy.UDP].sport
-            dst_port = packet[scapy.UDP].dport
-            print(f"UDP Packet:{src_ip}:{src_port} --> {dst_ip}:{dst_port}")
-
-        elif packet.haslayer(scapy.ICMP):
-            icmp_type = packet(scapy.ICMP).type
-            icmp_code = packet[scapy.ICMP].code
-            print(f"ICMP Packet: {src_ip} --> {dst_ip} Type: {icmp_type} Code: {icmp_code}")
+if __name__ == "__main__":
+    main()
