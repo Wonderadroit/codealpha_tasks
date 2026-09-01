@@ -1,46 +1,77 @@
 # CodeAlpha Security Tasks
 
-A small collection of Python exercises focused on **networking, packet analysis, and system inspection**. The repository documents hands-on learning work rather than production security software.
+A small Python security-learning portfolio focused on **networking, packet analysis, and local system inspection**.
+
+[![CI](https://github.com/Wonderadroit/codealpha_tasks/actions/workflows/ci.yml/badge.svg)](https://github.com/Wonderadroit/codealpha_tasks/actions/workflows/ci.yml)
 
 ## Projects
 
 ### Network Sniffer
 
-A lightweight packet-capture exercise using **Scapy**. It inspects IPv4 packets and reports TCP, UDP, and ICMP metadata such as addresses, ports, and protocol information.
+A lightweight Scapy-based packet-capture exercise that inspects IPv4 packets and reports TCP, UDP, and ICMP metadata.
 
 ```text
-Network Interface → Packet Capture → Protocol Detection → Packet Metadata
+Interface → Capture → IPv4 detection → Protocol parsing → Metadata
 ```
 
 ### Process Utility
 
-`ps.py` contains a separate Python exercise related to local system/process inspection.
+`ps.py` contains a separate exercise related to local process/system inspection.
 
 ## Requirements
 
-- Python 3
-- Scapy for the packet-sniffing exercise
-- An environment where packet capture is permitted
+- Python 3.11+
+- Scapy
 
-Install Scapy:
+Install dependencies:
 
 ```bash
-python -m pip install scapy
+python -m pip install -r requirements.txt
 ```
 
-Packet capture may require elevated privileges depending on the operating system.
+## Run the packet sniffer
+
+Capture packets on an interface you are authorized to inspect:
+
+```bash
+sudo python network_sniffer.py <interface>
+```
+
+For example:
+
+```bash
+sudo python network_sniffer.py eth0
+```
+
+Packet capture privileges vary by operating system and environment.
+
+## Test
+
+The repository includes deterministic tests that construct packets in memory, so CI does not need access to a real network interface.
+
+```bash
+pytest -q
+```
+
+Python source compilation is also checked in CI:
+
+```bash
+python -m compileall -q .
+```
+
+## Continuous Integration
+
+GitHub Actions runs the test suite and Python compilation checks on pushes and pull requests targeting `master` across Python 3.11, 3.12, and 3.13.
 
 ## Responsible use
 
-Use packet-capture functionality only on networks, devices, and interfaces you are authorized to inspect. Do not use this project to intercept traffic belonging to other people or systems without permission.
+Use packet-capture functionality only on networks, devices, and interfaces you are authorized to inspect. Do not intercept traffic belonging to other people or systems without permission.
 
 See `SECURITY.md` for security-reporting guidance.
 
 ## Engineering notes
 
-This repository intentionally contains small exercises. The code is useful as a record of practical learning and experimentation, but it is **not presented as production-grade monitoring or security software**.
-
-Future improvements may include automated tests, clearer module boundaries, stronger input handling, and documented execution examples.
+This repository intentionally contains small exercises. It is a **learning portfolio**, not production network-monitoring software. Automated tests validate the packet-processing logic but do not constitute a security audit.
 
 ## Status
 
